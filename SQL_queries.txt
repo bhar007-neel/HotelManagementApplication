@@ -1,0 +1,218 @@
+--SQL queries for creating DB and inserting dummy values
+
+CREATE TABLE "HotelChain" (
+  "ChainID" SERIAL PRIMARY KEY,
+  "Name" VARCHAR(255) UNIQUE NOT NULL,         
+  "CentralOfficeAddress" TEXT NOT NULL,
+  "NumOfHotels" INT CHECK ("NumOfHotels" >= 0),
+  "Email" TEXT UNIQUE NOT NULL,
+  "PhoneNumber" TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE "Hotel" (
+  "HotelID" SERIAL PRIMARY KEY,
+  "ChainID" INT NOT NULL REFERENCES "HotelChain"("ChainID") ON DELETE CASCADE,
+  "Stars" INT CHECK ("Stars" BETWEEN 1 AND 5),
+  "NumberOfRoom" INT CHECK ("NumberOfRoom" >= 1),
+  "Address" TEXT NOT NULL,
+  "Email" VARCHAR(255) UNIQUE NOT NULL,
+  "PhoneNumber" VARCHAR(20) UNIQUE NOT NULL
+);
+
+CREATE TABLE "Room" (
+  "RoomID" SERIAL PRIMARY KEY,
+  "HotelID" INT NOT NULL REFERENCES "Hotel"("HotelID") ON DELETE CASCADE,
+  "Price" DECIMAL(10,2) CHECK ("Price" > 0),
+  "RoomType" TEXT CHECK ("RoomType" IN ('Double', 'Single')),
+  "Damage" TEXT,
+  "View" TEXT CHECK ("View" IN ('Sea', 'Mountain', 'None')),
+  "Extendable" BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE "RoomAmenities" (
+  "Amenity" TEXT NOT NULL,
+  "RoomID" INT NOT NULL REFERENCES "Room"("RoomID") ON DELETE CASCADE,
+  PRIMARY KEY ("Amenity", "RoomID")
+);
+
+CREATE TABLE "Employee" (
+  "EmployeeID" SERIAL PRIMARY KEY,
+  "HotelID" INT,
+  "Name" VARCHAR(255) NOT NULL,
+  "Address" TEXT NOT NULL,
+  "SSN" VARCHAR(9) UNIQUE NOT NULL CHECK (LENGTH("SSN") = 9 AND SSN ~ '^[A-Za-z0-9]{9}$'),
+  "EmploymentType" VARCHAR(50) NOT NULL,
+  FOREIGN KEY (HotelID) REFERENCES "Hotel"(HotelID)
+);
+
+CREATE TABLE "Customer" (
+  "CustomerID" SERIAL PRIMARY KEY,
+  "Name" VARCHAR(255) NOT NULL,
+  "Address" TEXT NOT NULL,
+  "IDType" VARCHAR(20) NOT NULL CHECK (IDType IN ('SSN', 'SIN', 'Driver\'s License')),
+  "IDNumber" VARCHAR(19) NOT NULL CHECK (
+    (IDType IN ('SSN', 'SIN') AND LENGTH(IDNumber) = 9) OR 
+    (IDType = 'Driver\'s License' AND LENGTH(IDNumber) <= 19)
+  ),
+  "RegistrationDate" CHAR(8) NOT NULL CHECK (RegistrationDate ~ '^[0-9]{8}$')
+);
+
+-- Creating the BOOKING table
+CREATE TABLE BOOKING (
+    "BOOKING_ID SERIAL" PRIMARY KEY,
+    "START_DATE" DATE NOT NULL,
+    "END_DATE" DATE NOT NULL,
+    "STATUS" VARCHAR(20) CHECK (STATUS IN ('Confirmed', 'Pending', 'Cancelled'))
+);
+
+-- Creating the PAYMENT table
+CREATE TABLE PAYMENT (
+    "PAYMENT_ID" SERIAL PRIMARY KEY,
+    "AMOUNT" DECIMAL(10,2) NOT NULL,
+    "DATE" DATE NOT NULL,
+    "PAYMENT_METHOD" VARCHAR(20) CHECK (PAYMENT_METHOD IN ('Credit Card', 'PayPal', 'Debit Card', 'Cash'))
+);
+
+-- Creating the RENTING table
+CREATE TABLE RENTING (
+    "RENTING_ID" SERIAL PRIMARY KEY,
+    "PAYMENT_STATUS" VARCHAR(10) CHECK (PAYMENT_STATUS IN ('Paid', 'Unpaid'))
+);
+
+
+
+
+INSERT INTO "HotelChain" ("Name", "CentralOfficeAddress", "NumOfHotels", "Email", "PhoneNumber") 
+VALUES 
+('HotelChain1', '1 Hotel Street, New York', 10, 'chain1@gmail.com', '555-1111'),
+('ChainHotel1', '2 Hotel Street, Chicago', 15, 'hotel1@gmail.com', '666-2222'),
+('Elite', '300 Elite, LA', 8, 'elite@gmail.com', '555-3333'),
+('Grand', '400 Resort, Miami', 9, 'grand@gmail.com', '222-4444'),
+('Super', '200 Super, San Francisco', 12, 'super@gmail.com', '555-5555');
+
+
+
+
+
+
+--HOTEL INSERTION
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'HotelChain1'), 5, 50, '500 Ave, New York', 'ahotel@gmail.com', '555-3333');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'ChainHotel1'), 3, 20, '100 Street, Chicago', 'achain@gmail.com','666-1141');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'ChainHotel1'), 3, 40, '300 Lake St, Chicago', 'lake@gmail.com', '555-8888');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'ChainHotel1'), 2, 35, '600 Low St, Chicago', 'low@gmail.com', '555-9999');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'Elite'), 5, 80, '900 Sunset Blvd, Los Angeles', 'sunset@gmail.com', '555-1010');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'Elite'), 4, 70, '300 Hollywood Blvd, Los Angeles', 'hollywood@gmail.com', '555-1112');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'Grand'), 5, 90, '100 Beach Dr, Miami', 'beach@gmail.com', '555-1213');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'Grand'), 4, 60, '700 Ocean Dr, Miami', 'ocean@gmail.com', '555-1314');
+
+INSERT INTO "Hotel" ("ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber")
+VALUES ((SELECT "ChainID" FROM "HotelChain" WHERE "Name" = 'Super'), 3, 20, '700 Island Dr, San Francisco', 'Island@gmail.com', '555-1319');
+
+
+
+
+
+
+
+
+--INSERT ROOMS
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '500 Ave, New York'), 300.00, 'Single', NULL, 'Sea', TRUE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '100 Street, Chicago'), 300.00, 'Double', NULL, 'Sea', TRUE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '300 Lake St, Chicago'), 250.00, 'Double', NULL, 'Mountain', FALSE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '600 Low St, Chicago'), 200.00, 'Double', NULL, 'None', TRUE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '900 Sunset Blvd, Los Angeles'), 150.00, 'Single', NULL, 'None', FALSE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '300 Hollywood Blvd, Los Angeles'), 100.00, 'Single', NULL, 'None', FALSE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '100 Beach Dr, Miami'), 280.00, 'Single', NULL, 'Sea', FALSE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '700 Ocean Dr, Miami'), 220.00, 'Single', NULL, 'Mountain', TRUE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '700 Island Dr, San Francisco'), 180.00, 'Single', NULL, 'None', FALSE);
+
+INSERT INTO "Room" ("HotelID", "Price", "RoomType", "Damage", "View", "Extendable")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '500 Ave, New York'), 140.00, 'Double', NULL, 'None', FALSE);
+
+
+
+--INSERT EMPLOYEES
+
+INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+VALUES 
+((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '500 Ave, New York'), 'John Doe', '123 Main St, New York', '123456789', 'Manager');
+
+INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '100 Street, Chicago'), 'Jane Smith', '456 Oak St, Chicago', '987654321', 'Receptionist');
+
+INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '900 Sunset Blvd, Los Angeles'), 'Robert Brown', '789 Sunset Blvd, LA', '567890123', 'Housekeeping');
+
+INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '100 Beach Dr, Miami'), 'Emily Davis', '222 Ocean Ave, Miami', '654321789', 'Chef');
+
+INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+VALUES ((SELECT "HotelID" FROM "Hotel" WHERE "Address" = '700 Island Dr, San Francisco'), 'Michael Johnson', '333 Bay St, SF', '345678901', 'Concierge');
+
+--INSERT CUSTOMERS
+INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate")
+VALUES 
+('Alice Green', '12 Maple St, New York', 'SSN', '111223333', '20240101');
+
+INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate")
+VALUES ('Bob White', '34 Elm St, Chicago', 'Driver''s License', 'DL-IL-56789', '20240215');
+
+INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate")
+VALUES ('Charlie Black', '56 Pine St, Los Angeles', 'SIN', '222334444', '20240310');
+
+
+INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate")
+VALUES ('David Blue', '78 Palm St, Miami', 'SSN', '333445555', '20240405');
+
+INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate")
+VALUES ('Eve Yellow', '90 Market St, San Francisco', 'Driver''s License', 'DL-CA-98765', '20240520');
+
+
+
+
+--Lists all rooms at 5 star hotels (Probably should check if room is booked/rented)
+SELECT
+    "HotelChain"."Name" AS "Hotel Name",
+    "Room"."RoomID", 
+    "Room"."RoomType", 
+    "Room"."Price", 
+    "Hotel"."Stars", 
+    "Hotel"."Address"
+FROM "Room"
+JOIN "Hotel" ON "Room"."HotelID" = "Hotel"."HotelID"
+JOIN "HotelChain" ON "Hotel"."ChainID" = "HotelChain"."ChainID"
+WHERE "Hotel"."Stars" = 5;
