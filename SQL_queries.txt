@@ -1,5 +1,3 @@
---SQL queries for creating DB and inserting dummy values
-
 CREATE TABLE "HotelChain" (
   "ChainID" SERIAL PRIMARY KEY,
   "Name" VARCHAR(255) UNIQUE NOT NULL,         
@@ -40,29 +38,29 @@ CREATE TABLE "Employee" (
   "HotelID" INT,
   "Name" VARCHAR(255) NOT NULL,
   "Address" TEXT NOT NULL,
-  "SSN" VARCHAR(9) UNIQUE NOT NULL CHECK (LENGTH("SSN") = 9 AND SSN ~ '^[A-Za-z0-9]{9}$'),
+  "SSN" VARCHAR(9) UNIQUE NOT NULL CHECK (LENGTH("SSN") = 9 AND "SSN" ~ '^[0-9]{9}$'),
   "EmploymentType" VARCHAR(50) NOT NULL,
-  FOREIGN KEY (HotelID) REFERENCES "Hotel"(HotelID)
+  FOREIGN KEY ("HotelID") REFERENCES "Hotel"("HotelID")
 );
 
 CREATE TABLE "Customer" (
   "CustomerID" SERIAL PRIMARY KEY,
   "Name" VARCHAR(255) NOT NULL,
   "Address" TEXT NOT NULL,
-  "IDType" VARCHAR(20) NOT NULL CHECK (IDType IN ('SSN', 'SIN', 'Driver\'s License')),
+  "IDType" VARCHAR(20) NOT NULL CHECK ("IDType" IN ('SSN', 'SIN', 'Driver''s License')),
   "IDNumber" VARCHAR(19) NOT NULL CHECK (
-    (IDType IN ('SSN', 'SIN') AND LENGTH(IDNumber) = 9) OR 
-    (IDType = 'Driver\'s License' AND LENGTH(IDNumber) <= 19)
+    ("IDType" IN ('SSN', 'SIN') AND LENGTH("IDNumber") = 9) OR 
+    ("IDType" = 'Driver''s License' AND LENGTH("IDNumber") <= 19)
   ),
-  "RegistrationDate" CHAR(8) NOT NULL CHECK (RegistrationDate ~ '^[0-9]{8}$')
-);
+  "RegistrationDate" CHAR(8) NOT NULL CHECK ("RegistrationDate" ~ '^[0-9]{8}$')
+); 
 
 -- Creating the BOOKING table
 CREATE TABLE BOOKING (
-    "BOOKING_ID SERIAL" PRIMARY KEY,
+    "BOOKING_ID SERIAL" SERIAL PRIMARY KEY,
     "START_DATE" DATE NOT NULL,
     "END_DATE" DATE NOT NULL,
-    "STATUS" VARCHAR(20) CHECK (STATUS IN ('Confirmed', 'Pending', 'Cancelled'))
+    "STATUS" VARCHAR(20) CHECK ("STATUS" IN ('Confirmed', 'Pending', 'Cancelled'))
 );
 
 -- Creating the PAYMENT table
@@ -70,14 +68,15 @@ CREATE TABLE PAYMENT (
     "PAYMENT_ID" SERIAL PRIMARY KEY,
     "AMOUNT" DECIMAL(10,2) NOT NULL,
     "DATE" DATE NOT NULL,
-    "PAYMENT_METHOD" VARCHAR(20) CHECK (PAYMENT_METHOD IN ('Credit Card', 'PayPal', 'Debit Card', 'Cash'))
+    "PAYMENT_METHOD" VARCHAR(20) CHECK ("PAYMENT_METHOD" IN ('Credit Card', 'PayPal', 'Debit Card', 'Cash'))
 );
 
 -- Creating the RENTING table
 CREATE TABLE RENTING (
     "RENTING_ID" SERIAL PRIMARY KEY,
-    "PAYMENT_STATUS" VARCHAR(10) CHECK (PAYMENT_STATUS IN ('Paid', 'Unpaid'))
+    "PAYMENT_STATUS" VARCHAR(10) CHECK ("PAYMENT_STATUS" IN ('Paid', 'Unpaid'))
 );
+
 
 
 
