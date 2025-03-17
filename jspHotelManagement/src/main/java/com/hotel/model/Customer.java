@@ -50,11 +50,7 @@ public class Customer {
     }
 
     public void setIdType(String idType) {
-        if (idType.equals("SSN") || idType.equals("SIN") || idType.equals("Driver's License")) {
-            this.idType = idType;
-        } else {
-            throw new IllegalArgumentException("Invalid ID Type. Must be 'SSN', 'SIN', or 'Driver's License'.");
-        }
+        this.idType = idType;
     }
 
     public String getIdNumber() {
@@ -62,13 +58,7 @@ public class Customer {
     }
 
     public void setIdNumber(String idNumber) {
-        if ((this.idType.equals("SSN") || this.idType.equals("SIN")) && idNumber.length() == 9) {
-            this.idNumber = idNumber;
-        } else if (this.idType.equals("Driver's License") && idNumber.length() <= 19) {
-            this.idNumber = idNumber;
-        } else {
-            throw new IllegalArgumentException("Invalid ID Number length for the specified ID Type.");
-        }
+        this.idNumber = idNumber;
     }
 
     public String getRegistrationDate() {
@@ -76,10 +66,6 @@ public class Customer {
     }
 
     public void setRegistrationDate(String registrationDate) {
-        if (registrationDate.matches("\\d{8}")) {
-            this.registrationDate = registrationDate;
-        } else {
-            throw new IllegalArgumentException("Registration Date must be in YYYYMMDD format.");
-        }
+        this.registrationDate = registrationDate;
     }
 }
