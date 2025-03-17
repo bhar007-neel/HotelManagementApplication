@@ -37,7 +37,7 @@ public class HotelDAO {
 
 
     public void deleteHotel(int hotelid) {
-        String deletesql = "DELETE FROM \"Hotel\" WHERE \"RoomID\" = ?";
+        String deletesql = "DELETE FROM \"Hotel\" WHERE \"HotelID\" = ?";
 
         try (Connection connection = DBConnection.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(deletesql)) {
