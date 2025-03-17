@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking - e-Hotels</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ <!-- Video Background -->
+ <div class="video-container">
+     <video autoplay muted loop>
+         <source src="videos/video.mp4" type="video/mp4">
+         Your browser does not support the video tag.
+     </video>
+ </div>
+
 
 <header>
     <h1>Book a Room</h1>
 </header>
+
+<div class="video-container">
 
 <section class="container">
     <h2>Make a Booking</h2>

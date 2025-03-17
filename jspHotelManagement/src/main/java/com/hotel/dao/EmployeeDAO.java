@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class employeeDao{
+public class EmployeeDAO {
 
     // Retrieve all employees
     public List<Employee> getAllEmployees() {

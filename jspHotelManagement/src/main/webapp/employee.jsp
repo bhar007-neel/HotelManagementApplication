@@ -6,9 +6,16 @@
 <html>
 <head>
     <title>Employee Management</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ <!-- Video Background -->
+ <div class="video-container">
+     <video autoplay muted loop>
+         <source src="videos/video.mp4" type="video/mp4">
+         Your browser does not support the video tag.
+     </video>
+ </div>
 
 <header>
     <h1>Employee Management</h1>
