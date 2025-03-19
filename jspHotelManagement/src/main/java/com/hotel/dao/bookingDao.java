@@ -1,6 +1,6 @@
 package com.hotel.dao;
 
-import com.hotel.model.Booking;
+import com.hotel.model.Booking; // Importing booking model class
 import com.hotel.utils.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,26 +10,26 @@ public class bookingDao {
 
     // Retrieve all bookings
     public List<Booking> getAllBookings() {
-        List<Booking> bookings = new ArrayList<>();
+        List<Booking> bookings = new ArrayList<>(); // creating a list to store all bookings
         String query = "SELECT * FROM BOOKING";
 
-        try (Connection conn = DBConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = DBConnection.getConnection(); // getting a connection to the database
+             Statement stmt = conn.createStatement();   // creating a statement to execute sql queries
+             ResultSet rs = stmt.executeQuery(query)) {   // executing the query and storing its result
 
-            while (rs.next()) {
+            while (rs.next()) { //looping through the each row in the result
                 Booking booking = new Booking(
                         rs.getInt("BOOKING_ID"),
                         rs.getDate("START_DATE"),
                         rs.getDate("END_DATE"),
                         rs.getString("STATUS")
                 );
-                bookings.add(booking);
+                bookings.add(booking); // adding the booking to the list
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return bookings;
+        return bookings;  // returning the booking
     }
 
     // Retrieve booking by ID
@@ -37,8 +37,8 @@ public class bookingDao {
         Booking booking = null;
         String query = "SELECT * FROM BOOKING WHERE BOOKING_ID = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DBConnection.getConnection();  // connecting the database to perform the query
+             PreparedStatement stmt = conn.prepareStatement(query)) { //preapared statement is the placeholder for the bookingID value and helps prevent SQL injection attacks
 
             stmt.setInt(1, bookingId);
             ResultSet rs = stmt.executeQuery();
