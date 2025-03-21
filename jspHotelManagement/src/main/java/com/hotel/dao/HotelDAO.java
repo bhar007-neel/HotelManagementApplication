@@ -31,6 +31,7 @@ public class HotelDAO {
             
 
         catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
              e.printStackTrace();
         }
     }
@@ -43,15 +44,22 @@ public class HotelDAO {
         PreparedStatement preparedStatement = connection.prepareStatement(deletesql)) {
 
             preparedStatement.setInt(1,hotelid);
-            preparedStatement.executeUpdate();
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("Hotel deleted successfully");
+            } else {
+                System.out.println("Hotel not found");
+            }
 
         } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
 
     }
 
-    public void updateHotel(int hotelid, Integer stars, int NumberOfRoom, String email, String phonenumber) {
+    public void updateHotel(int hotelid, Integer stars, Integer NumberOfRoom, String email, String phonenumber) {
         String updatesql = "UPDATE \"Hotel\" SET ";
         List<Object> parameters = new ArrayList<>();
 
@@ -66,6 +74,11 @@ public class HotelDAO {
         if (phonenumber != null && !phonenumber.isEmpty()) {
             updatesql += "\"PhoneNumber\" = ?, ";
             parameters.add(phonenumber);
+        }
+
+        if (NumberOfRoom != null && NumberOfRoom > 0) {
+            updatesql += "\"Number\" = ?, ";
+            parameters.add(NumberOfRoom);
         }
 
    
@@ -95,10 +108,41 @@ public class HotelDAO {
                 }
 
     } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
         e.printStackTrace();
 
     }
 }
+
+    public List<Hotel> getAllHotels() {
+        List<Hotel> hotels = new ArrayList<>();
+
+        String getHotels = "SELECT * FROM \"Hotel\"";
+
+        try (Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(getHotels)) {
+            
+            ResultSet rs = preparedStatement.executeQuery();
+    
+                while (rs.next()) {
+                    hotels.add(new Hotel(
+                        rs.getInt("HotelID"),
+                        rs.getInt("ChainID"),
+                        rs.getInt("Stars"),
+                        rs.getInt("NumberOfRoom"),
+                        rs.getString("Address"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber")
+                    ));
+                }
+
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return hotels;
+    }
 
 
     public List<Hotel> filterHotel(String name, Integer stars, String address) {
@@ -110,7 +154,7 @@ public class HotelDAO {
 
         List<Object> parameters = new ArrayList<>();
         
-        Integer chainID = getChainIDByName(name);
+        Integer chainID = null;
 
         if (name != null && !name.isEmpty()) {
             chainID = getChainIDByName(name);
@@ -156,6 +200,7 @@ public class HotelDAO {
                 }
     
             } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
     
@@ -177,6 +222,7 @@ public class HotelDAO {
             }
 
         } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
 

@@ -20,7 +20,11 @@ public class RoomDAO {
             preparedStatement.setInt(1, hotelid);
             preparedStatement.setDouble(2, price);
             preparedStatement.setString(3, roomtype);
-            preparedStatement.setString(4, damage);
+            if (damage == null || damage.isEmpty()) {
+                preparedStatement.setNull(4, java.sql.Types.VARCHAR);
+            } else {
+                preparedStatement.setString(4, damage);
+            }
             preparedStatement.setString(5, view);
             preparedStatement.setBoolean(6, extendable);
 
@@ -29,6 +33,7 @@ public class RoomDAO {
 
         }
         catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -52,6 +57,7 @@ public class RoomDAO {
             }
     
         } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
     }
 }
@@ -106,6 +112,7 @@ public class RoomDAO {
             ));
         }
     } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
         e.printStackTrace();
     }
 
