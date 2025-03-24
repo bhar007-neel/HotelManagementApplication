@@ -8,6 +8,8 @@ public class Room {
     private String Damage;
     private String View;
     private boolean Extendable;
+    private String hotelAddress;
+    private String chainName;
 
 
     public Room(int RoomID, int HotelID, double Price, String RoomType, String Damage, String View, boolean Extendable) {
@@ -74,5 +76,19 @@ public class Room {
 
     public boolean getExtendable() {
         return this.Extendable;
+    }
+
+    public String getHotelAddress() {
+        return hotelAddress;
+    }
+    public void setHotelAddress(String hotelAddress) {
+        this.hotelAddress = hotelAddress;
+    }
+    
+    public String getChainName() {
+        return chainName;
+    }
+    public void setChainName(String chainName) {
+        this.chainName = chainName;
     }
 }

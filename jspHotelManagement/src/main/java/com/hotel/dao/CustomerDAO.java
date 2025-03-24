@@ -12,23 +12,34 @@ import com.hotel.utils.DBConnection;
 
 public class CustomerDAO {
 
-    public void saveCustomer(String name, String address, String idType, String idNumber, String registrationDate) {
-        String saveSql = "INSERT INTO \"Customer\" (\"Name\", \"Address\", \"IDType\", \"IDNumber\", \"RegistrationDate\") VALUES (?,?,?,?,?)";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(saveSql)) {
-
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, address);
-            preparedStatement.setString(3, idType);
-            preparedStatement.setString(4, idNumber);
-            preparedStatement.setString(5, registrationDate);
-            preparedStatement.executeUpdate();
-            System.out.println("Successfully inserted customer");
+    public int addCustomer(String name, String address, String idType, String idNumber, String registrationDate) {
+        int customerId = -1;
+    
+        String sql = "INSERT INTO \"Customer\" (\"Name\", \"Address\", \"IDType\", \"IDNumber\", \"RegistrationDate\") " +
+                     "VALUES (?, ?, ?, ?, ?) RETURNING \"CustomerID\"";
+    
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, name);
+            stmt.setString(2, address);
+            stmt.setString(3, idType);
+            stmt.setString(4, idNumber);
+            stmt.setString(5, registrationDate);
+    
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                customerId = rs.getInt("CustomerID");
+            }
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    
+        return customerId;
     }
+    
+    
 
     public void deleteCustomer(int customerId) {
         String deleteSql = "DELETE FROM \"Customer\" WHERE \"CustomerID\" = ?";

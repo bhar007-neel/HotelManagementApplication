@@ -56,11 +56,13 @@ CREATE TABLE "Customer" (
 ); 
 
 -- Creating the BOOKING table
-CREATE TABLE BOOKING (
-    "BOOKING_ID SERIAL" SERIAL PRIMARY KEY,
-    "START_DATE" DATE NOT NULL,
-    "END_DATE" DATE NOT NULL,
-    "STATUS" VARCHAR(20) CHECK ("STATUS" IN ('Confirmed', 'Pending', 'Cancelled'))
+CREATE TABLE "Booking" (
+  "BOOKING_ID" SERIAL PRIMARY KEY,
+  "CustomerID" INT REFERENCES "Customer"("CustomerID"),
+  "RoomID" INT REFERENCES "Room"("RoomID"),
+  "StartDate" DATE NOT NULL,
+  "EndDate" DATE NOT NULL,
+  "Status" VARCHAR(20) CHECK ("Status" IN ('Confirmed', 'Pending', 'Cancelled'))
 );
 
 -- Creating the PAYMENT table

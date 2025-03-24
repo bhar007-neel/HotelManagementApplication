@@ -4,13 +4,15 @@ import java.sql .Date;
 
 public class Booking {
     public int bookingId;
+    public int customerId;
+    public int roomID;
     public Date startDate;
     public Date endDate;
     public String status;// "Confirmed, Pending , Cancelled "
 
     //Constructors
     public Booking(){}
-    public Booking(int bookingId,Date startDate, Date endDate, String status){
+    public Booking(int bookingId, int customerId, int roomID, Date startDate, Date endDate, String status){
         this.bookingId = bookingId;
         this.startDate =startDate;
         this.endDate = endDate;
@@ -23,6 +25,22 @@ public class Booking {
 
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public int getCustomerId(){
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getRoomId(){
+        return roomID;
+    }
+
+    public void setRoomId(int roomID) {
+        this.roomID = roomID;
     }
 
     public Date getStartDate() {

@@ -1,5 +1,6 @@
 package com.hotel.servlets;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 import com.hotel.dao.RoomDAO;
@@ -11,10 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/room") // Maps servlet to room
+@WebServlet("/room")
 public class RoomServlet extends HttpServlet {
 
-    private RoomDAO roomDAO = new RoomDAO(); // DAO instance for room operations
+    private RoomDAO roomDAO = new RoomDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,9 +59,13 @@ public class RoomServlet extends HttpServlet {
     }
 
     private void listRooms(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Room> rooms = roomDAO.filterRooms(null, null, null, null); // Fetch all rooms
+        Date startDate = Date.valueOf("2025-01-01");
+        Date endDate = Date.valueOf("2025-12-31");
+        
+        List<Room> rooms = roomDAO.filterRoomsWithAvailability(null, null, null, null, null, startDate, endDate, null);
         request.setAttribute("rooms", rooms);
         request.getRequestDispatcher("rooms.jsp").forward(request, response);
+        
     }
 
     private void filterRooms(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -68,10 +73,17 @@ public class RoomServlet extends HttpServlet {
         Double maxPrice = request.getParameter("maxPrice") != null ? Double.parseDouble(request.getParameter("maxPrice")) : null;
         String roomType = request.getParameter("roomType");
         String view = request.getParameter("view");
+        String address = request.getParameter("address");
 
-        List<Room> rooms = roomDAO.filterRooms(minPrice, maxPrice, roomType, view);
+        Date startDate = request.getParameter("startDate") != null ? Date.valueOf(request.getParameter("startDate")) : null;
+        Date endDate = request.getParameter("endDate") != null ? Date.valueOf(request.getParameter("endDate")) : null;
+
+
+        List<Room> rooms = roomDAO.filterRoomsWithAvailability(minPrice, maxPrice, roomType, view, null, startDate, endDate, address);
+
         request.setAttribute("rooms", rooms);
         request.getRequestDispatcher("rooms.jsp").forward(request, response);
+
     }
 
     private void addRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -100,7 +112,7 @@ public class RoomServlet extends HttpServlet {
             response.sendRedirect("room?action=list"); 
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format");    
         }
     }
 }

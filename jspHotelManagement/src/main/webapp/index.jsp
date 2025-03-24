@@ -20,7 +20,7 @@
         <nav>
             <ul>
                 <li><a href="index.jsp">Home</a></li>
-                <li><a href="booking.jsp">Booking</a></li>
+                <li><a href="dateselection.jsp">Booking</a></li>
                 <li><a href="renting.jsp">Renting</a></li>
                 <li><a href="employee.jsp">Employees</a></li>
                 <li><a href="admin-login.jsp">Admin</a></li>

@@ -229,6 +229,54 @@ public class HotelDAO {
         return null;
 
     }
+    
+    public List<String> getAllHotelChainNames() {
+        List<String> chainNames = new ArrayList<>();
+        String query = "SELECT \"Name\" FROM \"HotelChain\"";
+    
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet rs = preparedStatement.executeQuery()) {
+    
+            while (rs.next()) {
+                chainNames.add(rs.getString("Name"));
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return chainNames;
+    }
+
+    public List<Integer> getHotelIdsFromChainName(String chainName) {
+        List<Integer> hotelIds = new ArrayList<>();
+    
+        String sql =
+    "SELECT h.\"HotelID\" " +
+    "FROM \"Hotel\" h " +
+    "JOIN \"HotelChain\" c ON h.\"ChainID\" = c.\"ChainID\" " +
+    "WHERE c.\"Name\" = ?";
+
+    
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, chainName);
+            ResultSet rs = stmt.executeQuery();
+    
+            while (rs.next()) {
+                hotelIds.add(rs.getInt("HotelID"));
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return hotelIds;
+    }
+    
+    
 }
 
 
