@@ -14,11 +14,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/employee") // Maps servlet to employee
 public class EmployeeServlet extends HttpServlet {
+//    private static final String URL = "jdbc:postgresql://localhost:5432/HotelManagement";
+//    private static final String USER = "postgres";
+//    private static final String PASSWORD = "";
 
-    private EmployeeDAO employeeDAO = new EmployeeDAO(); 
+
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String action = request.getParameter("action");
 
         if (action == null) {
@@ -31,6 +36,9 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "get":
                 getEmployeeById(request, response);
+                break;
+            case "searchBySSN":
+                searchBySSN(request, response);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
@@ -56,10 +64,31 @@ public class EmployeeServlet extends HttpServlet {
             case "delete":
                 deleteEmployee(request, response);
                 break;
+            case "searchBySSN":
+                searchBySSN(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
     }
+    private void searchBySSN(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String ssn = request.getParameter("ssn");
+        System.out.println("Searching for SSN: " + ssn);
+
+        Employee employee = employeeDAO.getEmployeeBySSN(ssn);
+
+        if (employee != null) {
+            System.out.println("Employee found: " + employee.getName());
+            request.setAttribute("employee", employee);
+        } else {
+            System.out.println("No employee found with SSN: " + ssn);
+            request.setAttribute("error", "No employee found with SSN: " + ssn);
+        }
+
+        request.getRequestDispatcher("employee-edit.jsp").forward(request, response);
+    }
+
+
 
     private void listEmployees(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Employee> employees = employeeDAO.getAllEmployees();
@@ -94,7 +123,8 @@ public class EmployeeServlet extends HttpServlet {
 
             Employee newEmployee = new Employee(0, name, address, ssn, role);
             employeeDAO.addEmployee(newEmployee, hotelId);
-            response.sendRedirect("employee?action=list");
+            response.sendRedirect("employee-edit.jsp");
+
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format");
@@ -111,7 +141,8 @@ public class EmployeeServlet extends HttpServlet {
 
             Employee updatedEmployee = new Employee(employeeId, name, address, ssn, role);
             employeeDAO.updateEmployee(updatedEmployee);
-            response.sendRedirect("employee?action=list");
+            response.sendRedirect("employee-edit.jsp");
+
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format");
@@ -122,7 +153,8 @@ public class EmployeeServlet extends HttpServlet {
         try {
             int employeeId = Integer.parseInt(request.getParameter("employeeId"));
             employeeDAO.deleteEmployee(employeeId);
-            response.sendRedirect("employee?action=list");
+            response.sendRedirect("employee-edit.jsp");
+
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid employee ID");

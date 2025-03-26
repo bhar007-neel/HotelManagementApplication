@@ -55,43 +55,27 @@ public class CustomerDAO {
     }
 
     public void updateCustomer(int customerId, String name, String address) {
-        String updateSql = "UPDATE \"Customer\" SET ";
-        List<Object> parameters = new ArrayList<>();
-
-        if (name != null && !name.isEmpty()) {
-            updateSql += "\"Name\" = ?, ";
-            parameters.add(name);
-        }
-        if (address != null && !address.isEmpty()) {
-            updateSql += "\"Address\" = ?, ";
-            parameters.add(address);
-        }
-
-        if (parameters.isEmpty()) {
-            System.out.println("No fields updated");
-            return;
-        }
-
-        updateSql = updateSql.substring(0, updateSql.length() - 2) + " WHERE \"CustomerID\" = ?";
-        parameters.add(customerId);
+        String updateSql = "UPDATE \"Customer\" SET \"Name\" = ?, \"Address\" = ? WHERE \"CustomerID\" = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
 
-            for (int i = 0; i < parameters.size(); i++) {
-                preparedStatement.setObject(i + 1, parameters.get(i));
-            }
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, address);
+            preparedStatement.setInt(3, customerId);
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("Customer updated");
+                System.out.println("✅ Customer updated successfully.");
             } else {
-                System.out.println("Customer not updated");
+                System.out.println("⚠️ No rows updated.");
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();

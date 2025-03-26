@@ -36,7 +36,7 @@ public class EmployeeDAO {
     // Retrieve employee by ID
     public Employee getEmployeeById(int employeeId) {
         Employee employee = null;
-        String query = "SELECT * FROM \"Employee\" WHERE \"EmployeeID\" = ?";
+        String query = "SELECT * FROM \"Employee\" WHERE \"SSN\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -58,6 +58,36 @@ public class EmployeeDAO {
         }
         return employee;
     }
+    public Employee getEmployeeBySSN(String ssn) {
+        Employee employee = null;
+        String sql = "SELECT * FROM \"Employee\" WHERE \"SSN\" = ?";
+
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, ssn);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                employee = new Employee(
+                        rs.getInt("EmployeeID"),
+                        rs.getString("Name"),
+                        rs.getString("Address"),
+                        rs.getString("SSN"),
+                        rs.getString("EmploymentType")
+                );
+
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employee;
+    }
+
 
     // Add a new employee
     public void addEmployee(Employee emp, int hotelId) {

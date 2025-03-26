@@ -8,8 +8,27 @@
     }
 %>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
 
-<h2>Welcome, Admin</h2>
-<p>You can now modify room features.</p>
-<a href="update-room.jsp">Modify Room Features</a>
-<a href="logout.jsp">Logout</a>
+    <h2>Welcome, Admin</h2>
+    <p>You can now manage hotel information.</p>
+
+    <!--  Link to Manage Customers -->
+    <p><a href="AdminCustomerServlet">Manage Customers</a></p>
+
+    <!--  Link to Employee Edit Page -->
+    <p><a href="employee-edit.jsp">Manage Employees</a></p>
+
+     <p><a href="dateselection.jsp">Book a room</a></p>
+
+    <!--  Logout -->
+    <br><br>
+    <a href="logout.jsp">Logout</a>
+
+</body>
+</html>
