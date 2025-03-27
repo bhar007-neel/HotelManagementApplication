@@ -31,14 +31,20 @@ public class BookingServlet extends HttpServlet {
             String idNumber = request.getParameter("idNumber");
             String registrationDate = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
 
-            //ID validation
+            // ID validation
             if ((idType.equals("SSN") || idType.equals("SIN")) && idNumber.length() != 9) {
                 throw new IllegalArgumentException("ID number must be 9 characters for SSN/SIN");
             } else if (idType.equals("Driver's License") && idNumber.length() > 19) {
                 throw new IllegalArgumentException("Driver's License number too long");
             }
 
-            customerDAO.addCustomer(name, address, idType, idNumber, registrationDate);
+            Integer customerId = customerDAO.findCustomerId(idType, idNumber);
+            if (customerId == null) {
+                customerId = customerDAO.addCustomer(name, address, idType, idNumber, registrationDate);
+                if (customerId == -1) {
+                    throw new IllegalStateException("Failed to create customer.");
+                }
+            }
 
             String roomIdStr = request.getParameter("roomId");
             String startDateStr = request.getParameter("startDate");
@@ -52,11 +58,6 @@ public class BookingServlet extends HttpServlet {
             Date startDate = Date.valueOf(startDateStr);
             Date endDate = Date.valueOf(endDateStr);
 
-            int customerId = customerDAO.addCustomer(name, address, idType, idNumber, registrationDate);
-            if (customerId == -1) {
-                throw new IllegalStateException("Failed to create customer.");
-            }
-
             Booking booking = new Booking();
             booking.setRoomId(roomId);
             booking.setStartDate(startDate);
@@ -64,6 +65,7 @@ public class BookingServlet extends HttpServlet {
             booking.setStatus("Pending");
             booking.setCustomerId(customerId);
             bookingDAO.addBooking(booking);
+
             request.setAttribute("message", "Booking successfully submitted!");
             request.getRequestDispatcher("confirmation.jsp").forward(request, response);
 

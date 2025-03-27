@@ -100,4 +100,24 @@ public class CustomerDAO {
         }
         return customers;
     }
+
+    public Integer findCustomerId(String idType, String idNumber) {
+        String sql = "SELECT \"CustomerID\" FROM \"Customer\" WHERE \"IDType\" = ? AND \"IDNumber\" = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, idType);
+            stmt.setString(2, idNumber);
+    
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("CustomerID");
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }
