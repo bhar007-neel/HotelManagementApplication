@@ -1,21 +1,21 @@
 package com.hotel.model;
 
-import java.util.SplittableRandom;
-
 public class Renting {
     private int rentingId;
+    private int bookingId;
     private String paymentStatus;
 
     // Constructors
-    public Renting(){
-    }
-    public Renting( int rentingId, String paymentStatus){
-        this.rentingId =rentingId;
-        this.paymentStatus =paymentStatus;
-
+    public Renting() {
     }
 
-    public int getRentingId(){
+    public Renting(int rentingId, int bookingId, String paymentStatus) {
+        this.rentingId = rentingId;
+        this.bookingId = bookingId;
+        this.paymentStatus = paymentStatus;
+    }
+
+    public int getRentingId() {
         return rentingId;
     }
 
@@ -23,7 +23,15 @@ public class Renting {
         this.rentingId = rentingId;
     }
 
-    public String getPaymentStatus(){
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 

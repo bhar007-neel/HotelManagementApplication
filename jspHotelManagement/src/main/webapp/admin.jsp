@@ -46,7 +46,7 @@
             text-align: center;
             height: 100vh;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.7); /* translucent light background */
+            background: rgba(255, 255, 255, 0.7);
             margin: 0 auto;
             max-width: 600px;
             border-radius: 20px;
@@ -95,6 +95,7 @@
         <p>You can now manage hotel information.</p>
 
         <a href="AdminCustomerServlet">Manage Customers</a><br>
+        <a href="AdminBookingServlet">Manage Bookings</a><br>
         <a href="employee-edit.jsp">Manage Employees</a><br>
         <a href="dateselection.jsp">Book a Room</a><br><br>
         <a href="logout.jsp">Logout</a>

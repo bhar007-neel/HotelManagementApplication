@@ -74,14 +74,21 @@ CREATE TABLE PAYMENT (
 );
 
 -- Creating the RENTING table
-CREATE TABLE RENTING (
+CREATE TABLE "RENTING" (
     "RENTING_ID" SERIAL PRIMARY KEY,
+    "BOOKING_ID" INT UNIQUE REFERENCES "Booking"("BOOKING_ID") ON DELETE CASCADE,
     "PAYMENT_STATUS" VARCHAR(10) CHECK ("PAYMENT_STATUS" IN ('Paid', 'Unpaid'))
 );
 
+CREATE TABLE "ArchivedRenting" (
+  "ARCHIVE_ID" SERIAL PRIMARY KEY,
+  "OriginalRentingID" INT,
+  "BookingID" INT,
+  "PaymentStatus" VARCHAR(10) CHECK ("PaymentStatus" IN ('Paid', 'Unpaid')),
+  "ArchivedOn" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
-
-
+	
 
 INSERT INTO "HotelChain" ("Name", "CentralOfficeAddress", "NumOfHotels", "Email", "PhoneNumber") 
 VALUES 

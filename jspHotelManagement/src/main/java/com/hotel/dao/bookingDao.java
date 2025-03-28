@@ -13,24 +13,27 @@ import com.hotel.utils.DBConnection;
 
 public class bookingDao {
 
-    // Retrieve all bookings
+    // Retrieve all bookings with customer details
     public List<Booking> getAllBookings() {
         List<Booking> bookings = new ArrayList<>();
-        String query = "SELECT * FROM \"Booking\"";
+        String query = "SELECT b.*, c.\"Name\" AS customer_name, c.\"IDType\", c.\"IDNumber\" " +
+                       "FROM \"Booking\" b JOIN \"Customer\" c ON b.\"CustomerID\" = c.\"CustomerID\"";
 
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                Booking booking = new Booking(
-                        rs.getInt("BOOKING_ID"),
-                        rs.getInt("CustomerID"),
-                        rs.getInt("RoomID"),
-                        rs.getDate("StartDate"),
-                        rs.getDate("EndDate"),
-                        rs.getString("Status")
-                );
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("BOOKING_ID"));
+                booking.setCustomerId(rs.getInt("CustomerID"));
+                booking.setRoomId(rs.getInt("RoomID"));
+                booking.setStartDate(rs.getDate("StartDate"));
+                booking.setEndDate(rs.getDate("EndDate"));
+                booking.setStatus(rs.getString("Status"));
+                booking.setCustomerName(rs.getString("customer_name"));
+                booking.setIdType(rs.getString("IDType"));
+                booking.setIdNumber(rs.getString("IDNumber"));
                 bookings.add(booking);
             }
         } catch (SQLException e) {
@@ -42,7 +45,8 @@ public class bookingDao {
     // Retrieve booking by ID
     public Booking getBookingById(int bookingId) {
         Booking booking = null;
-        String query = "SELECT * FROM \"Booking\" WHERE \"BOOKING_ID\" = ?";
+        String query = "SELECT b.*, c.\"Name\" AS customer_name, c.\"IDType\", c.\"IDNumber\" " +
+                       "FROM \"Booking\" b JOIN \"Customer\" c ON b.\"CustomerID\" = c.\"CustomerID\" WHERE b.\"BOOKING_ID\" = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -51,14 +55,16 @@ public class bookingDao {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                booking = new Booking(
-                        rs.getInt("BOOKING_ID"),
-                        rs.getInt("CustomerID"),
-                        rs.getInt("RoomID"),
-                        rs.getDate("StartDate"),
-                        rs.getDate("EndDate"),
-                        rs.getString("Status")
-                );
+                booking = new Booking();
+                booking.setBookingId(rs.getInt("BOOKING_ID"));
+                booking.setCustomerId(rs.getInt("CustomerID"));
+                booking.setRoomId(rs.getInt("RoomID"));
+                booking.setStartDate(rs.getDate("StartDate"));
+                booking.setEndDate(rs.getDate("EndDate"));
+                booking.setStatus(rs.getString("Status"));
+                booking.setCustomerName(rs.getString("customer_name"));
+                booking.setIdType(rs.getString("IDType"));
+                booking.setIdNumber(rs.getString("IDNumber"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,22 +74,68 @@ public class bookingDao {
 
     // Add a new booking
     public void addBooking(Booking booking) {
-        String query = "INSERT INTO \"Booking\" (\"CustomerID\", \"RoomID\", \"StartDate\", \"EndDate\", \"Status\") VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO \"Booking\" (\"CustomerID\", \"RoomID\", \"StartDate\", \"EndDate\", \"Status\") VALUES (?, ?, ?, ?, ?)";
+    
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+    
+            insertStmt.setInt(1, booking.getCustomerId());
+            insertStmt.setInt(2, booking.getRoomId());
+            insertStmt.setDate(3, booking.getStartDate());
+            insertStmt.setDate(4, booking.getEndDate());
+            insertStmt.setString(5, booking.getStatus());
+            insertStmt.executeUpdate();
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-            stmt.setInt(1, booking.getCustomerId());
-            stmt.setInt(2, booking.getRoomId());
-            stmt.setDate(3, booking.getStartDate());
-            stmt.setDate(4, booking.getEndDate());
-            stmt.setString(5, booking.getStatus());
+    public void updateStatus(int bookingId, String status) {
+        String sql = "UPDATE \"Booking\" SET \"Status\" = ? WHERE \"BOOKING_ID\" = ?";
+        String archiveQuery = "INSERT INTO \"ArchivedBooking\" (\"OriginalBookingID\", \"CustomerID\", \"RoomID\", \"StartDate\", \"EndDate\", \"Status\") VALUES (?, ?, ?, ?, ?, ?)";
+    
+        try (Connection conn = DBConnection.getConnection()) {
+            // 1. Update Booking
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, status);
+                stmt.setInt(2, bookingId);
+                stmt.executeUpdate();
+            }
+    
+            // 2. Archive only if final decision
+            if ("Confirmed".equalsIgnoreCase(status) || "Cancelled".equalsIgnoreCase(status) || "Rejected".equalsIgnoreCase(status)) {
+                Booking booking = getBookingById(bookingId); // fetch full details
+                if (booking != null) {
+                    try (PreparedStatement archiveStmt = conn.prepareStatement(archiveQuery)) {
+                        archiveStmt.setInt(1, booking.getBookingId());
+                        archiveStmt.setInt(2, booking.getCustomerId());
+                        archiveStmt.setInt(3, booking.getRoomId());
+                        archiveStmt.setDate(4, booking.getStartDate());
+                        archiveStmt.setDate(5, booking.getEndDate());
+                        archiveStmt.setString(6, status);
+                        archiveStmt.executeUpdate();
+                        System.out.println("✅ Booking archived after decision.");
+                    }
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void convertBookingToRenting(int bookingId) {
+        String sql = "INSERT INTO \"RENTING\" (\"RENTING_ID\", \"PAYMENT_STATUS\") VALUES (?, 'Unpaid')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, bookingId);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Update an existing booking
     public void updateBooking(Booking booking) {
         String query = "UPDATE \"Booking\" SET \"StartDate\"=?, \"EndDate\"=?, \"Status\"=? WHERE \"BOOKING_ID\"=?";
 
@@ -100,7 +152,34 @@ public class bookingDao {
         }
     }
 
-    // Delete a booking
+    public void rejectAndArchive(int bookingId) {
+        String archiveQuery = "INSERT INTO \"ArchivedBooking\" " +
+                "(\"OriginalBookingID\", \"CustomerID\", \"RoomID\", \"StartDate\", \"EndDate\", \"Status\") " +
+                "SELECT \"BOOKING_ID\", \"CustomerID\", \"RoomID\", \"StartDate\", \"EndDate\", 'Rejected' " +
+                "FROM \"Booking\" WHERE \"BOOKING_ID\" = ?";
+    
+        String deleteQuery = "DELETE FROM \"Booking\" WHERE \"BOOKING_ID\" = ?";
+    
+        try (Connection conn = DBConnection.getConnection()) {
+            // Archive first
+            try (PreparedStatement archiveStmt = conn.prepareStatement(archiveQuery)) {
+                archiveStmt.setInt(1, bookingId);
+                int archived = archiveStmt.executeUpdate();
+                System.out.println("🗃 Rejected booking archived: " + archived + " row(s)");
+            }
+    
+            // Then delete
+            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery)) {
+                deleteStmt.setInt(1, bookingId);
+                int deleted = deleteStmt.executeUpdate();
+                System.out.println("❌ Rejected booking deleted: " + deleted + " row(s)");
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteBooking(int bookingId) {
         String query = "DELETE FROM \"Booking\" WHERE \"BOOKING_ID\" = ?";
 

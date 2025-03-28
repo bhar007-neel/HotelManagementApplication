@@ -108,6 +108,11 @@
         a:hover {
             color: #ccc;
         }
+
+        .center-button {
+            text-align: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
