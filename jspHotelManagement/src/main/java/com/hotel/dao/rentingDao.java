@@ -96,28 +96,35 @@ public class rentingDao {
 
     // Update an existing renting
     public void updateRenting(Renting renting) {
-        String updateRentingSql = "UPDATE RENTING SET PAYMENT_STATUS = ? WHERE RENTING_ID = ?";
-        String updateArchiveSql = "UPDATE ArchivedRenting SET PAYMENT_STATUS = ? WHERE OriginalRentingID = ?";
+        String updateQuery = "UPDATE \"Renting\" SET \"PAYMENT_STATUS\" = ? WHERE \"RENTING_ID\" = ?";
+        String archiveQuery = "INSERT INTO \"ArchivedRenting\" (\"OriginalRentingID\", \"BookingID\", \"PaymentStatus\") " +
+        "SELECT \"RENTING_ID\", \"BOOKING_ID\", ? FROM \"Renting\" WHERE \"RENTING_ID\" = ?";
+
     
         try (Connection conn = DBConnection.getConnection()) {
-            // Update in RENTING table
-            try (PreparedStatement stmt = conn.prepareStatement(updateRentingSql)) {
-                stmt.setString(1, renting.getPaymentStatus());
-                stmt.setInt(2, renting.getRentingId());
-                stmt.executeUpdate();
+            // Update payment status in RENTING table
+            try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                updateStmt.setString(1, renting.getPaymentStatus());
+                updateStmt.setInt(2, renting.getRentingId());
+                updateStmt.executeUpdate();
+                System.out.println("Renting updated: RENTING_ID = " + renting.getRentingId());
             }
     
-            // Update in ArchivedRenting table
-            try (PreparedStatement archiveStmt = conn.prepareStatement(updateArchiveSql)) {
-                archiveStmt.setString(1, renting.getPaymentStatus());
-                archiveStmt.setInt(2, renting.getRentingId());
-                archiveStmt.executeUpdate();
+            // Only archive if marked Paid
+            if ("Paid".equalsIgnoreCase(renting.getPaymentStatus())) {
+                try (PreparedStatement archiveStmt = conn.prepareStatement(archiveQuery)) {
+                    archiveStmt.setString(1, "Paid");
+                    archiveStmt.setInt(2, renting.getRentingId());
+                    int archivedRows = archiveStmt.executeUpdate();
+                    System.out.println("Archived Renting: " + archivedRows + " row(s)");
+                }
             }
     
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
     
 
     // Delete a renting
@@ -148,7 +155,7 @@ public class rentingDao {
                 checkRenting.setInt(1, bookingId);
                 ResultSet rs = checkRenting.executeQuery();
                 if (rs.next()) {
-                    System.out.println("⚠️ Renting already exists for booking " + bookingId);
+                    System.out.println("Renting already exists for booking " + bookingId);
                     return false;
                 }
             }
@@ -158,7 +165,7 @@ public class rentingDao {
                 checkBooking.setInt(1, bookingId);
                 ResultSet rs = checkBooking.executeQuery();
                 if (!rs.next()) {
-                    System.out.println("❌ Booking " + bookingId + " does not exist.");
+                    System.out.println("Booking " + bookingId + " DNE.");
                     return false;
                 }
             }
@@ -167,14 +174,14 @@ public class rentingDao {
             try (PreparedStatement insertRenting = conn.prepareStatement(insertQuery)) {
                 insertRenting.setInt(1, bookingId);
                 insertRenting.executeUpdate();
-                System.out.println("✅ Renting created for booking " + bookingId);
+                System.out.println("Renting created for booking " + bookingId);
             }
     
             // Update booking status
             try (PreparedStatement updateBooking = conn.prepareStatement(updateBookingQuery)) {
                 updateBooking.setInt(1, bookingId);
                 updateBooking.executeUpdate();
-                System.out.println("✅ Booking " + bookingId + " marked as Confirmed");
+                System.out.println("Booking " + bookingId + " Confirmed");
             }
     
             return true;

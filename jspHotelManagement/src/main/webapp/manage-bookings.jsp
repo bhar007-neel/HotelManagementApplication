@@ -49,7 +49,7 @@
                         <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>"/>
                         <% if (!"Confirmed".equals(booking.getStatus())) { %>
                             <button type="submit" name="action" value="confirm">Confirm & Rent</button>
-                            <button type="submit" name="action" value="reject" onclick="return confirm('Are you sure you want to reject this booking? This will delete it.')">Reject</button>
+                            <button type="submit" name="action" value="reject" onclick="return confirm('Are you sure you want to reject this booking? Booking will be archived then deleted.')">Reject</button>
                         <% } %>
                     </td>   
                 </form>

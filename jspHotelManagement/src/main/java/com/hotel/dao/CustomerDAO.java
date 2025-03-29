@@ -66,9 +66,9 @@ public class CustomerDAO {
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("✅ Customer updated successfully.");
+                System.out.println("Customer updated successfully.");
             } else {
-                System.out.println("⚠️ No rows updated.");
+                System.out.println("No rows updated.");
             }
 
         } catch (SQLException e) {

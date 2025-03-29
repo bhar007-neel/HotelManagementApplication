@@ -1,17 +1,22 @@
 package com.hotel.servlets;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.hotel.model.Customer;
 import com.hotel.utils.DBConnection;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/AdminCustomerServlet")
 public class AdminCustomerServlet extends HttpServlet {
@@ -21,7 +26,6 @@ public class AdminCustomerServlet extends HttpServlet {
 //    private static final String USER = "postgres";
 //    private static final String PASSWORD = "";
 
-    // Handles GET request: display list of customers directly from DB
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -45,12 +49,10 @@ public class AdminCustomerServlet extends HttpServlet {
 
 
 
-            // Query to fetch customers
             String query = "SELECT * FROM \"Customer\"";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
-            // Loop through the result and store in customer list
             while (rs.next()) {
                 customers.add(new Customer(
                         rs.getInt("CustomerID"),
@@ -71,12 +73,10 @@ public class AdminCustomerServlet extends HttpServlet {
             throw new ServletException("Database connection failed.", e);
         }
 
-        // Send customer list to JSP
         request.setAttribute("customers", customers);
         request.getRequestDispatcher("admin-customers.jsp").forward(request, response);
     }
 
-    // Handles POST (same as before)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -99,7 +99,6 @@ public class AdminCustomerServlet extends HttpServlet {
                 String idType = request.getParameter("idType");
                 String idNumber = request.getParameter("idNumber");
 
-                //  Format current date to exactly 8-character string: YYYYMMDD
                 String today = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
 
                 String insertSql = "INSERT INTO \"Customer\" (\"Name\", \"Address\", \"IDType\", \"IDNumber\", \"RegistrationDate\") VALUES (?, ?, ?, ?, ?)";
@@ -108,7 +107,7 @@ public class AdminCustomerServlet extends HttpServlet {
                 stmt.setString(2, address);
                 stmt.setString(3, idType);
                 stmt.setString(4, idNumber);
-                stmt.setString(5, today);  //  No more error here
+                stmt.setString(5, today);
 
                 int rows = stmt.executeUpdate();
                 System.out.println("Customer added. Rows inserted: " + rows);

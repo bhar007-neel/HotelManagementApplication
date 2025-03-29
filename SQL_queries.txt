@@ -66,11 +66,13 @@ CREATE TABLE "Booking" (
 );
 
 -- Creating the PAYMENT table
-CREATE TABLE PAYMENT (
+
+CREATE TABLE "Payment" (
     "PAYMENT_ID" SERIAL PRIMARY KEY,
     "AMOUNT" DECIMAL(10,2) NOT NULL,
     "DATE" DATE NOT NULL,
-    "PAYMENT_METHOD" VARCHAR(20) CHECK ("PAYMENT_METHOD" IN ('Credit Card', 'PayPal', 'Debit Card', 'Cash'))
+    "PAYMENT_METHOD" VARCHAR(20) CHECK ("PAYMENT_METHOD" IN ('Credit Card', 'PayPal', 'Debit Card', 'Cash')),
+    "RENTING_ID" INT REFERENCES "RENTING"("RENTING_ID") ON DELETE CASCADE
 );
 
 -- Creating the RENTING table
@@ -79,6 +81,18 @@ CREATE TABLE "RENTING" (
     "BOOKING_ID" INT UNIQUE REFERENCES "Booking"("BOOKING_ID") ON DELETE CASCADE,
     "PAYMENT_STATUS" VARCHAR(10) CHECK ("PAYMENT_STATUS" IN ('Paid', 'Unpaid'))
 );
+
+CREATE TABLE "ArchivedBooking" (
+  "ARCHIVE_ID" SERIAL PRIMARY KEY,
+  "OriginalBookingID" INT,
+  "CustomerID" INT,
+  "RoomID" INT,
+  "StartDate" DATE NOT NULL,
+  "EndDate" DATE NOT NULL,
+  "Status" VARCHAR(20) CHECK ("Status" IN ('Confirmed', 'Pending', 'Cancelled', 'Rejected')),
+  "ArchivedOn" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 
 CREATE TABLE "ArchivedRenting" (
   "ARCHIVE_ID" SERIAL PRIMARY KEY,
