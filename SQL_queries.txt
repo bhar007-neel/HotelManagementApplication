@@ -57,7 +57,6 @@ CREATE TABLE "Customer" (
   "RegistrationDate" CHAR(8) NOT NULL CHECK ("RegistrationDate" ~ '^[0-9]{8}$')
 ); 
 
--- Creating the BOOKING table
 CREATE TABLE "Booking" (
   "BOOKING_ID" SERIAL PRIMARY KEY,
   "CustomerID" INT REFERENCES "Customer"("CustomerID"),
@@ -67,7 +66,6 @@ CREATE TABLE "Booking" (
   "Status" VARCHAR(20) CHECK ("Status" IN ('Confirmed', 'Pending', 'Cancelled'))
 );
 
--- Creating the PAYMENT table
 
 CREATE TABLE "Payment" (
     "PAYMENT_ID" SERIAL PRIMARY KEY,
@@ -103,6 +101,54 @@ CREATE TABLE "ArchivedRenting" (
   "PaymentStatus" VARCHAR(10) CHECK ("PaymentStatus" IN ('Paid', 'Unpaid')),
   "ArchivedOn" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+Trigger 1:
+CREATE OR REPLACE FUNCTION update_room_count_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    UPDATE "Hotel"
+    SET "NumberOfRoom" = "NumberOfRoom" + 1
+    WHERE "HotelID" = NEW."HotelID";
+
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE "Hotel"
+    SET "NumberOfRoom" = "NumberOfRoom" - 1
+    WHERE "HotelID" = OLD."HotelID";
+  END IF;
+
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_room_count
+AFTER INSERT ON "Room"
+FOR EACH ROW
+EXECUTE FUNCTION update_room_count_after_insert();
+
+Trigger 2:
+CREATE OR REPLACE FUNCTION update_chain_hotel_count()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        UPDATE "HotelChain"
+        SET "NumOfHotels" = "NumOfHotels" + 1
+        WHERE "ChainID" = NEW."ChainID";
+
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE "HotelChain"
+        SET "NumOfHotels" = "NumOfHotels" - 1
+        WHERE "ChainID" = OLD."ChainID";
+    END IF;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_chain_hotel_count
+AFTER INSERT OR DELETE ON "Hotel"
+FOR EACH ROW
+EXECUTE FUNCTION update_chain_hotel_count();
 
 	
 
