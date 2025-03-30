@@ -60,6 +60,27 @@ public class RoomDAO {
             e.printStackTrace();
         }
     }
+    public void deleteRoom(int roomID) {
+        String sql = "DELETE FROM \"Room\" WHERE \"RoomID\" = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, roomID);
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Room deleted successfully");
+            } else {
+                System.out.println("No room found with ID: " + roomID);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error deleting room: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     public List<Room> filterRoomsWithAvailability(Double minPrice, Double maxPrice, String roomType, String view,
                                                   List<Integer> hotelIDs, Date startDate, Date endDate, String address) {

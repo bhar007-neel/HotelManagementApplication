@@ -63,7 +63,7 @@ public class HotelServlet extends HttpServlet {
     private void listHotels(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Hotel> hotels = hotelDAO.getAllHotels();
         request.setAttribute("hotels", hotels); 
-        request.getRequestDispatcher("hotels.jsp").forward(request, response); 
+        request.getRequestDispatcher("manage_hotels.jsp").forward(request, response);
     }
 
     private void searchHotels(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,7 +73,7 @@ public class HotelServlet extends HttpServlet {
 
         List<Hotel> hotels = hotelDAO.filterHotel(name, stars, address);
         request.setAttribute("hotels", hotels);
-        request.getRequestDispatcher("hotels.jsp").forward(request, response);
+        request.getRequestDispatcher("manage_hotels.jsp").forward(request, response);
     }
 
     private void addHotel(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -95,8 +95,11 @@ public class HotelServlet extends HttpServlet {
     private void updateHotel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int hotelID = Integer.parseInt(request.getParameter("hotelID"));
-            Integer stars = request.getParameter("stars") != null ? Integer.parseInt(request.getParameter("stars")) : null;
-            Integer numberofroom = request.getParameter("numberofroom") != null ? Integer.parseInt(request.getParameter("numberofroom")) : null;
+            String starsStr = request.getParameter("stars");
+            Integer stars = (starsStr != null && !starsStr.isEmpty()) ? Integer.parseInt(starsStr) : null;
+            String roomsStr = request.getParameter("numberofroom");
+            Integer numberofroom = (roomsStr != null && !roomsStr.isEmpty()) ? Integer.parseInt(roomsStr) : null;
+
             String email = request.getParameter("email");
             String phoneNumber = request.getParameter("phoneNumber");
 
@@ -110,6 +113,7 @@ public class HotelServlet extends HttpServlet {
     private void deleteHotel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int hotelID = Integer.parseInt(request.getParameter("hotelID"));
+            System.out.println("Received hotelID = " + hotelID); // Debug line
             hotelDAO.deleteHotel(hotelID);
             response.sendRedirect("hotel?action=list"); 
         } catch (NumberFormatException e) {

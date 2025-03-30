@@ -115,7 +115,7 @@ public class bookingDao {
                         archiveStmt.setDate(5, booking.getEndDate());
                         archiveStmt.setString(6, status);
                         archiveStmt.executeUpdate();
-                        System.out.println("Booking archived after decision.");
+                        System.out.println(" Booking archived after decision.");
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class bookingDao {
             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery)) {
                 deleteStmt.setInt(1, bookingId);
                 int deleted = deleteStmt.executeUpdate();
-                System.out.println("Rejected booking deleted: " + deleted + " row(s)");
+                System.out.println(" Rejected booking deleted: " + deleted + " row(s)");
             }
     
         } catch (SQLException e) {

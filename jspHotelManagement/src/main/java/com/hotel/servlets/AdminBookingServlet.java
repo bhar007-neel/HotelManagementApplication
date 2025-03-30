@@ -45,7 +45,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 // Then create renting
                 boolean created = rentingDAO.createFromBooking(bookingId);
                 if (!created) {
-                    request.setAttribute("error", "Booking is already confirmed or renting exists.");
+                    request.setAttribute("error", " Booking is already confirmed or renting exists.");
                 }
                 break;
 
@@ -59,7 +59,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 break;
 
             default:
-                request.setAttribute("error", "Unknown action.");
+                request.setAttribute("error", " Unknown action.");
                 break;
         }
 
@@ -70,7 +70,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
     } catch (Exception e) {
         e.printStackTrace();
-        request.setAttribute("error", "Failed to process booking: " + e.getMessage());
+        request.setAttribute("error", " Failed to process booking: " + e.getMessage());
         request.getRequestDispatcher("manage-bookings.jsp").forward(request, response);
     }
 }

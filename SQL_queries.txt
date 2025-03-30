@@ -238,3 +238,187 @@ FROM "Room"
 JOIN "Hotel" ON "Room"."HotelID" = "Hotel"."HotelID"
 JOIN "HotelChain" ON "Hotel"."ChainID" = "HotelChain"."ChainID"
 WHERE "Hotel"."Stars" = 5;
+
+-- INSERT INTO "Hotel" ("HotelID", "ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber") VALUES
+-- (10, 5, 3, 47, '694 Karen Run Suite 228, East Marcialand, ID 10291', 'shill@hill.com', '(631)248-9491x0969'),
+-- (11, 1, 4, 27, '102 Robin Spring Apt. 999, Rowlandport, IA 18478', 'farrellnancy@hotmail.com', '2511182528'),
+-- (12, 1, 2, 66, '0865 Mccall Forest, New Jeffreyberg, MN 80462', 'qowens@lee.biz', '+1-636-636-7663'),
+-- (13, 2, 2, 70, '0151 Monica Lake, East Steven, WY 73696', 'marshalljoseph@smith.com', '001-329-045-4180'),
+-- (14, 4, 5, 64, '985 Townsend Throughway Suite 658, Port Hollybury, IL 87035', 'valeriewilson@parker.biz', '4459136325'),
+﻿
+-- INSERT INTO "Hotel" ("HotelID", "ChainID", "Stars", "NumberOfRoom", "Address", "Email", "PhoneNumber") VALUES
+-- (10, 5, 3, 47, '694 Karen Run Suite 228, East Marcialand, ID 10291', 'shill@hill.com', '(631)248-9491x0969'),
+-- (11, 1, 4, 27, '102 Robin Spring Apt. 999, Rowlandport, IA 18478', 'farrellnancy@hotmail.com', '2511182528'),
+-- (12, 1, 2, 66, '0865 Mccall Forest, New Jeffreyberg, MN 80462', 'qowens@lee.biz', '+1-636-636-7663'),
+-- (13, 2, 2, 70, '0151 Monica Lake, East Steven, WY 73696', 'marshalljoseph@smith.com', '001-329-045-4180'),
+-- (14, 4, 5, 64, '985 Townsend Throughway Suite 658, Port Hollybury, IL 87035', 'valeriewilson@parker.biz', '4459136325'),
+-- (15, 4, 3, 33, '707 Jeffery Fall, Port Donnamouth, UT 88058', 'turnergina@martinez.com', '0273427817'),
+-- (16, 2, 3, 86, '215 Angela Mountains Suite 972, East Michelleborough, OK 43435', 'meganfloyd@johnson.com', '2694405794'),
+-- (17, 1, 4, 89, '9327 Lloyd Key, Lake Amanda, MI 00577', 'dawn71@johnston.com', '+1-313-387-8677'),
+-- (18, 4, 3, 42, '5260 Rojas Pine Apt. 112, Kochville, WV 74718', 'joshuawalker@bell.com', '4852647334'),
+-- (19, 1, 4, 56, '1660 Aaron Forges Apt. 707, Port Jasmine, NE 42848', 'campbellmark@cox.com', '+1-954-442-3736'),
+-- (20, 3, 5, 95, '040 Jessica Station, Lake Melissaborough, CO 07637', 'laurenboyd@weiss.com', '+1-415-215-3339'),
+-- (21, 4, 4, 81, '3575 Vaughn Valley, East Chelsea, MO 42604', 'tricia82@flores.org', '+1-803-330-9887'),
+-- (22, 2, 5, 73, '0815 King Mall, West Lauren, NM 84256', 'sampsonstephen@torres.com', '+1-702-341-9574'),
+-- (23, 4, 3, 61, '75050 Lisa Lakes, South Danny, CT 30910', 'xmoore@larson.com', '+1-507-763-2096'),
+-- (24, 1, 2, 97, '713 Perry Turnpike Suite 156, Smithborough, NJ 88957', 'cpope@jimenez.net', '8486288829'),
+-- (25, 1, 5, 75, '2182 Johnny Hill, Port Tonyview, NH 87478', 'brownian@hess.com', '003-623-759-3237'),
+-- (26, 2, 2, 84, '940 Justin Drives, South Meganport, TN 18031', 'fsmith@ferguson.net', '5563096123'),
+-- (27, 1, 5, 22, '7978 Chandler Overpass, New Christophermouth, RI 61800', 'harrisoncarl@rhodes.com', '2035704690'),
+-- (28, 3, 3, 54, '404 Rodriguez Viaduct, New Jessicaberg, OR 29221', 'vking@lambert.com', '+1-618-618-6231'),
+-- (29, 3, 4, 79, '641 Hernandez Roads Apt. 236, Jamesfurt, AR 27090', 'ameliaphelps@bradley.org', '5416671710'),
+-- (30, 2, 3, 91, '433 William Alley, East Jonathan, AZ 90245', 'garzakevin@smith.com', '+1-306-306-9331');
+-- select * from "Employee"
+-- INSERT INTO "Employee" ("EmployeeID", "HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES
+-- (10, 10, 'Jerry Duncan', '847 Stephanie Forks Apt. 480, Mariaside, AZ 22870', '713755950', 'Receptionist'),
+-- (11, 11, 'Amanda Savage', '460 Knight Springs, Lake Amandachester, HI 58084', '575877174', 'Chef'),
+-- (12, 12, 'Richard Tucker', '4415 Steven Viaduct Apt. 057, East Brianville, AL 30343', '137864538', 'Concierge'),
+-- (13, 13, 'Alexandra Alexander', '01529 Carl Inlet Apt. 894, Washingtonstad, CT 58090', '979395105', 'Housekeeping'),
+-- (14, 14, 'Nicole Knapp', '13764 Janice Hollow, Fergusonstad, VA 37281', '785746335', 'Manager'),
+-- (15, 15, 'Cameron Allen', '446 Megan Court, Jessicastad, IN 61893', '618269472', 'Chef'),
+-- (16, 16, 'Michelle Contreras', '6360 Smith Cove, Patrickville, WV 97047', '086414301', 'Receptionist'),
+-- (17, 17, 'Caleb Matthews', '14944 Donald Inlet Apt. 292, South Kevinland, MO 25390', '621093485', 'Housekeeping'),
+-- (18, 18, 'Tiffany Bowen', '70980 Wagner Roads, West Ericmouth, CO 30289', '933597410', 'Manager'),
+-- (19, 19, 'Charles Edwards', '5938 David Streets, Port Andrewfort, ID 52787', '290473328', 'Concierge'),
+-- (20, 20, 'Erica Turner', '938 Robert Orchard Apt. 478, New Tammytown, MS 54160', '881360037', 'Receptionist'),
+-- (21, 21, 'Marcus Powell', '07821 Steven Route, Kaylamouth, MA 95734', '979327088', 'Housekeeping'),
+-- (22, 22, 'Vanessa Colon', '3395 Martinez Tunnel Apt. 230, East Kimfurt, MI 08251', '168559979', 'Manager'),
+-- (23, 23, 'Brandi King', '1660 George Fall Apt. 198, Jessicafurt, NM 42719', '553508200', 'Receptionist'),
+-- (24, 24, 'Mikayla Colon', '969 Lee Trail, Amandafurt, DE 53552', '379509014', 'Housekeeping'),
+-- (25, 25, 'Douglas Stevenson', '2579 Snyder Villages Apt. 879, South Tracey, ND 02882', '573167642', 'Concierge'),
+-- (26, 26, 'Joel Casey', '86943 Susan Extension Apt. 848, Tiffanyborough, KY 59467', '176287921', 'Chef'),
+-- (27, 27, 'Brooke Morgan', '49939 John Gateway Apt. 448, Dawnland, NV 52588', '909829511', 'Manager'),
+-- (28, 28, 'Vanessa Anderson', '800 Miller Hills Suite 680, South Matthewberg, DC 77194', '658303973', 'Receptionist'),
+-- (29, 29, 'Robert Reeves', '80930 Mcdonald Villages, Taylorfort, SD 86618', '637935165', 'Housekeeping'),
+-- (30, 30, 'Tristan Vargas', '5787 Terry Field, Port Melissafurt, MT 10011', '984119283', 'Concierge');
+-- select * from "Customer"
+-- INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate") VALUES
+-- ('Christina Miller', '33804 Thomas Brooks, Ericksonmouth, MT 90574', 'SSN', '013247600', '20250312'),
+-- ('Christopher Graham', '177 Black Village Suite 628, Debbieshire, MN 28840', 'SSN', '972871714', '20250218'),
+-- ('Jamie Wilson', '577 Tracy Cliff, Port Jacob, NH 21330', 'SIN', '365515272', '20240830'),
+-- ('Sarah Greene', '222 Kathryn Landing, Lake Anna, NM 19172', 'SSN', '296442758', '20241208'),
+-- ('Heather Steele', '9438 Michelle Groves, East Jonathan, ND 39111', 'SSN', '827024392', '20241029'),
+-- ('Kristen Nelson', '1809 Snyder Mountains Suite 246, North Eric, MI 37945', 'Driver''s License', 'DL-CA-51847', '20240622'),
+-- ('Ethan Brown', '2055 Lori Drives, Port Pamela, DE 32456', 'SSN', '392561086', '20250314'),
+-- ('Taylor Washington', '1476 Flores Falls Apt. 832, South Sarahfurt, SC 95645', 'SIN', '837162091', '20240421'),
+-- ('Aaron Rios', '8130 Teresa Expressway Apt. 826, West Tiffany, FL 28884', 'Driver''s License', 'DL-FL-82445', '20240702'),
+-- ('Tina Adams', '6735 Dwayne Shoals Apt. 438, Nicoleborough, AK 93408', 'SSN', '120495337', '20240925'),
+-- ('Courtney Walker', '166 Smith Village, Rodneyfurt, NY 07642', 'Driver''s License', 'DL-NY-23795', '20241111'),
+-- ('Melanie Freeman', '9336 Chase Hills Apt. 304, East Kenneth, OH 13059', 'SSN', '505727385', '20241010'),
+-- ('Julian Kelley', '62763 Katrina Canyon, East Williammouth, KS 82379', 'Driver''s License', 'DL-KS-76493', '20240801'),
+-- ('Benjamin Owens', '3372 Powell Mountains Suite 356, New Justinfurt, CO 14700', 'SIN', '158627903', '20241228'),
+-- ('Samantha Reed', '1196 Taylor Gateway Apt. 228, West Olivia, WY 66318', 'SSN', '247913680', '20250305');
+-- INSERT INTO "Customer" ("Name", "Address", "IDType", "IDNumber", "RegistrationDate") VALUES
+-- ('Diana Marshall', '270 Marie Crescent Apt. 724, Port Brandonville, UT 69320', 'SSN', '507561978', '20250119'),
+-- ('Jeffrey Lopez', '12559 Michele Stream, South Tracy, GA 94127', 'Driver''s License', 'DL-WA-90940', '20250101'),
+-- ('Kaitlyn Cooper', '7285 Hart Fall Apt. 434, North Daniel, KS 99637', 'SSN', '469783038', '20241003'),
+-- ('Tim Jones', '7543 Margaret Coves, Newtonstad, UT 22931', 'Driver''s License', 'DL-KS-34870', '20240730'),
+-- ('Alexander Chambers', '814 Carly Mills, Webertown, AK 29643', 'Driver''s License', 'DL-NE-43047', '20250312'),
+-- ('Robert Reyes', '460 Matthew Corner Suite 722, New Joshua, NY 12426', 'SIN', '082002135', '20240816'),
+-- ('Ashley Lopez', '6989 Obrien Knolls, New Brendabury, OR 70056', 'SSN', '789206014', '20240926'),
+-- ('Susan Daniels', '46549 Meghan Squares Apt. 572, Port Vickie, GA 03987', 'SIN', '903397051', '20241121'),
+-- ('Scott Thomas', '797 Charles Throughway, Lake Martha, AZ 70874', 'SSN', '433075223', '20240518'),
+-- ('Cameron Thomas', '671 Brian Road, New Katherine, VA 91588', 'SSN', '680246684', '20240610');
+-- select * from "Room"
+-- INSERT INTO "Room" ("RoomID", "HotelID", "Price", "RoomType", "Damage", "View", "Extendable") VALUES
+-- (11, 11, 207.49, 'Single', 'Task other model trouble.', 'Sea', FALSE),
+-- (12, 11, 325.09, 'Single', 'Responsibility sell what.', 'Sea', FALSE),
+-- (13, 11, 314.39, 'Single', NULL, 'Sea', FALSE),
+-- (14, 12, 393.78, 'Double', 'Thousand role deal.', 'Mountain', FALSE),
+-- (15, 12, 201.23, 'Double', 'Summer site half consider.', 'Mountain', FALSE),
+-- (16, 12, 251.77, 'Double', 'Job apply.', 'Mountain', TRUE),
+-- (17, 13, 157.64, 'Single', 'Work church across ago someone.', 'None', TRUE),
+-- (18, 13, 306.82, 'Double', 'Senior major.', 'Mountain', FALSE),
+-- (19, 13, 160.36, 'Double', 'Authority full hot.', 'None', FALSE),
+-- (20, 14, 259.07, 'Double', 'Early film capital develop.', 'Mountain', FALSE),
+-- (21, 14, 247.29, 'Single', 'Hot security certain.', 'Mountain', FALSE),
+-- (22, 14, 276.66, 'Single', 'Safe best entire bad.', 'Mountain', FALSE),
+-- (23, 15, 369.95, 'Double', NULL, 'None', FALSE),
+-- (24, 15, 289.95, 'Double', NULL, 'None', FALSE),
+-- (25, 15, 295.12, 'Double', NULL, 'None', TRUE)
+-- ;
+-- select * from "booking"
+
+
+values on -29-03-2025
+ALTER TABLE "Hotel"
+-- ADD COLUMN "ManagerID" INT UNIQUE;
+
+
+-- select * from "Hotel"
+-- Managers for HotelID 1 to 25
+-- This will update each Hotel with the matching Manager's EmployeeID
+-- UPDATE "Hotel"
+-- SET "ManagerID" = emp."EmployeeID"
+-- FROM "Employee" emp
+-- WHERE emp."HotelID" = "Hotel"."HotelID"
+--   AND emp."EmploymentType" ILIKE 'Manager';
+
+
+-- SELECT h."HotelID", h."Address"
+-- FROM "Hotel" h
+-- LEFT JOIN "Employee" e ON h."HotelID" = e."HotelID" AND e."EmploymentType" ILIKE 'Manager'
+-- WHERE e."EmployeeID" IS NULL;
+-- Let's say HotelID 2 is missing a manager
+
+-- SELECT setval(
+--   pg_get_serial_sequence('"Employee"', 'EmployeeID'),
+--   (SELECT MAX("EmployeeID") FROM "Employee")
+-- );
+
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType")
+-- VALUES (2, 'Backup Manager', 'Somewhere St', '999888777', 'Manager');
+
+
+-- UPDATE "Hotel"
+-- SET "ManagerID" = e."EmployeeID"
+-- FROM "Employee" e
+-- WHERE "Hotel"."HotelID" = e."HotelID"
+--   AND e."EmploymentType" ILIKE 'Manager';
+-- selet * from "Hotel"
+-- SELECT h."HotelID", h."Address"
+-- FROM "Hotel" h
+-- LEFT JOIN "Employee" e
+--   ON h."HotelID" = e."HotelID" AND e."EmploymentType" ILIKE 'Manager'
+-- WHERE e."EmployeeID" IS NULL
+-- ORDER BY h."HotelID";
+
+
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (1, 'Auto Manager 1', '1 Auto Street', '991000001', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (2, 'Auto Manager 2', '2 Auto Street', '991000002', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (3, 'Auto Manager 3', '3 Auto Street', '991000003', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (4, 'Auto Manager 4', '4 Auto Street', '991000004', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (5, 'Auto Manager 5', '5 Auto Street', '991000005', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (6, 'Auto Manager 6', '6 Auto Street', '991000006', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (7, 'Auto Manager 7', '7 Auto Street', '991000007', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (8, 'Auto Manager 8', '8 Auto Street', '991000008', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (9, 'Auto Manager 9', '9 Auto Street', '991000009', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (10, 'Auto Manager 10', '10 Auto Street', '991000010', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (11, 'Auto Manager 11', '11 Auto Street', '991000011', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (12, 'Auto Manager 12', '12 Auto Street', '991000012', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (13, 'Auto Manager 13', '13 Auto Street', '991000013', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (14, 'Auto Manager 14', '14 Auto Street', '991000014', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (15, 'Auto Manager 15', '15 Auto Street', '991000015', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (16, 'Auto Manager 16', '16 Auto Street', '991000016', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (17, 'Auto Manager 17', '17 Auto Street', '991000017', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (18, 'Auto Manager 18', '18 Auto Street', '991000018', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (19, 'Auto Manager 19', '19 Auto Street', '991000019', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (20, 'Auto Manager 20', '20 Auto Street', '991000020', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (21, 'Auto Manager 21', '21 Auto Street', '991000021', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (22, 'Auto Manager 22', '22 Auto Street', '991000022', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (23, 'Auto Manager 23', '23 Auto Street', '991000023', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (24, 'Auto Manager 24', '24 Auto Street', '991000024', 'Manager');
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (25, 'Auto Manager 25', '25 Auto Street', '991000025', 'Manager');
+-- select * from "Hotel"
+-- UPDATE "Hotel"
+-- SET "ManagerID" = e."EmployeeID"
+-- FROM "Employee" e
+-- WHERE "Hotel"."HotelID" = e."HotelID"
+--   AND e."EmploymentType" ILIKE 'Manager';
+-- INSERT INTO "Employee" ("HotelID", "Name", "Address", "SSN", "EmploymentType") VALUES (30, 'Auto Manager 1', '1 Auto Street', '991880701', 'Manager');
+-- SELECT setval(pg_get_serial_sequence('"Hotel"', 'HotelID'), MAX("HotelID")) FROM "Hotel";
+-- SELECT setval(
+--   pg_get_serial_sequence('"Room"', 'RoomID'),
+--   (SELECT MAX("RoomID") FROM "Room")
+-- );
+
