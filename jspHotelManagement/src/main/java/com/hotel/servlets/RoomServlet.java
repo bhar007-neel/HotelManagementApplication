@@ -53,6 +53,9 @@ public class RoomServlet extends HttpServlet {
             case "updatePrice":
                 updateRoomPrice(request, response);
                 break;
+            case "delete":
+                deleteRoom(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
@@ -64,7 +67,7 @@ public class RoomServlet extends HttpServlet {
         
         List<Room> rooms = roomDAO.filterRoomsWithAvailability(null, null, null, null, null, startDate, endDate, null);
         request.setAttribute("rooms", rooms);
-        request.getRequestDispatcher("rooms.jsp").forward(request, response);
+        request.getRequestDispatcher("manage_rooms.jsp").forward(request, response);
         
     }
 
@@ -91,8 +94,10 @@ public class RoomServlet extends HttpServlet {
             int hotelID = Integer.parseInt(request.getParameter("hotelID"));
             double price = Double.parseDouble(request.getParameter("price"));
             String roomType = request.getParameter("roomType");
+            roomType = roomType.substring(0, 1).toUpperCase() + roomType.substring(1).toLowerCase();
             String damage = request.getParameter("damage");
             String view = request.getParameter("view");
+            view = view.substring(0, 1).toUpperCase() + view.substring(1).toLowerCase();
             boolean extendable = Boolean.parseBoolean(request.getParameter("extendable"));
 
             roomDAO.saveRoom(hotelID, price, roomType, damage, view, extendable);
@@ -109,10 +114,20 @@ public class RoomServlet extends HttpServlet {
             double newPrice = Double.parseDouble(request.getParameter("newPrice"));
 
             roomDAO.updateRoomPrice(roomID, newPrice);
-            response.sendRedirect("room?action=list"); 
+            response.sendRedirect("manage_rooms.jsp");
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format");    
         }
     }
+    private void deleteRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            int roomID = Integer.parseInt(request.getParameter("roomID"));
+            roomDAO.deleteRoom(roomID);
+            response.sendRedirect("room?action=list");
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Room ID");
+        }
+    }
+
 }

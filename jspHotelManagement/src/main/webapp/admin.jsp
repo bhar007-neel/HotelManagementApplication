@@ -95,8 +95,10 @@
         <p>You can now manage hotel information.</p>
 
         <a href="AdminCustomerServlet">Manage Customers</a><br>
-        <a href="AdminBookingServlet">Manage Bookings</a><br>
+
         <a href="employee-edit.jsp">Manage Employees</a><br>
+        <a href="manage_hotels.jsp">Manage Hotels</a> <br>
+        <a href ="manage_rooms.jsp"> Manage Rooms</a> <br>
         <a href="dateselection.jsp">Book a Room</a><br><br>
         <a href="logout.jsp">Logout</a>
     </div>

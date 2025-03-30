@@ -38,25 +38,33 @@ public class HotelDAO {
 
 
     public void deleteHotel(int hotelid) {
-        String deletesql = "DELETE FROM \"Hotel\" WHERE \"HotelID\" = ?";
 
-        try (Connection connection = DBConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(deletesql)) {
+        try (Connection connection = DBConnection.getConnection()) {
 
-            preparedStatement.setInt(1,hotelid);
-            int rowsDeleted = preparedStatement.executeUpdate();
+            // Step 1: Delete employees assigned to this hotel
+            String deleteEmployeesSQL = "DELETE FROM \"Employee\" WHERE \"HotelID\" = ?";
+            try (PreparedStatement deleteEmployees = connection.prepareStatement(deleteEmployeesSQL)) {
+                deleteEmployees.setInt(1, hotelid);
+                deleteEmployees.executeUpdate();
+            }
 
-            if (rowsDeleted > 0) {
-                System.out.println("Hotel deleted successfully");
-            } else {
-                System.out.println("Hotel not found");
+            // Step 2: Delete the hotel
+            String deleteHotelSQL = "DELETE FROM \"Hotel\" WHERE \"HotelID\" = ?";
+            try (PreparedStatement deleteHotel = connection.prepareStatement(deleteHotelSQL)) {
+                deleteHotel.setInt(1, hotelid);
+                int rowsDeleted = deleteHotel.executeUpdate();
+
+                if (rowsDeleted > 0) {
+                    System.out.println("Hotel deleted successfully");
+                } else {
+                    System.out.println("Hotel not found");
+                }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error deleting hotel: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     public void updateHotel(int hotelid, Integer stars, Integer NumberOfRoom, String email, String phonenumber) {
@@ -77,11 +85,12 @@ public class HotelDAO {
         }
 
         if (NumberOfRoom != null && NumberOfRoom > 0) {
-            updatesql += "\"Number\" = ?, ";
+            updatesql += "\"NumberOfRoom\" = ?, ";
             parameters.add(NumberOfRoom);
         }
 
-   
+
+
         if (parameters.isEmpty()) {
             System.out.println("No fields updated");
             return;
