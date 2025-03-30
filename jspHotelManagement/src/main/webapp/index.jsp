@@ -92,8 +92,6 @@
         <h1>Welcome to e-Hotels</h1>
         <div class="options">
             <a href="dateselection.jsp">Booking</a>
-            <a href="renting.jsp">Renting</a>
-            <a href="employee.jsp">Employees</a>
             <a href="admin-login.jsp">Admin</a>
         </div>
     </div>

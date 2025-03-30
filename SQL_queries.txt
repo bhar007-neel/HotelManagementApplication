@@ -11,10 +11,12 @@ CREATE TABLE "Hotel" (
   "HotelID" SERIAL PRIMARY KEY,
   "ChainID" INT NOT NULL REFERENCES "HotelChain"("ChainID") ON DELETE CASCADE,
   "Stars" INT CHECK ("Stars" BETWEEN 1 AND 5),
-  "NumberOfRoom" INT CHECK ("NumberOfRoom" >= 1),
+  "NumberOfRoom" INT CHECK ("NumberOfRoom" >= 0),
   "Address" TEXT NOT NULL,
   "Email" VARCHAR(255) UNIQUE NOT NULL,
-  "PhoneNumber" VARCHAR(20) UNIQUE NOT NULL
+  "PhoneNumber" VARCHAR(20) UNIQUE NOT NULL,
+  "ManagerID" INT UNIQUE,
+  FOREIGN KEY ("ManagerID") REFERENCES "Employee"("EmployeeID") ON DELETE SET NULL
 );
 
 CREATE TABLE "Room" (
