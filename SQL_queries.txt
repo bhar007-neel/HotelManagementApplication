@@ -124,7 +124,7 @@ GRANT SELECT ON "RoomCapacityPerHotel" TO "youruser";
 View 1 Rooms Available Per Area:
 CREATE OR REPLACE VIEW "AvailableRoomsPerArea" AS
 SELECT 
-    TRIM(split_part(h."Address", ',', 2)) AS "City",
+    TRIM(split_part(h."Address", ',', 2)) AS "HotelAddress",  -- City as HotelAddress
     COUNT(r."RoomID") AS "AvailableRoomCount"
 FROM 
     "Hotel" h
@@ -139,6 +139,7 @@ WHERE
     b."BOOKING_ID" IS NULL
 GROUP BY 
     TRIM(split_part(h."Address", ',', 2));
+
 
 
 View 2 Aggregated Capacity of All Rooms Per Hotel:
