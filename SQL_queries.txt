@@ -115,6 +115,11 @@ Index 3:
 CREATE INDEX idx_room_price
 ON "Room" ("Price");
 
+Views:
+
+GRANT SELECT ON "AvailableRoomsPerArea" TO "youruser";
+GRANT SELECT ON "RoomCapacityPerHotel" TO "youruser";
+
 
 View 1 Rooms Available Per Area:
 CREATE OR REPLACE VIEW "AvailableRoomsPerArea" AS
