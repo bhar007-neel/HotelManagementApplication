@@ -124,7 +124,7 @@ GRANT SELECT ON "RoomCapacityPerHotel" TO "youruser";
 View 1 Rooms Available Per Area:
 CREATE OR REPLACE VIEW "AvailableRoomsPerArea" AS
 SELECT 
-    h."Address" AS "HotelAddress",
+    TRIM(split_part(h."Address", ',', 2)) AS "City",
     COUNT(r."RoomID") AS "AvailableRoomCount"
 FROM 
     "Hotel" h
@@ -136,9 +136,9 @@ LEFT JOIN
     AND b."Status" = 'Confirmed'
     AND CURRENT_DATE BETWEEN b."StartDate" AND b."EndDate"
 WHERE 
-    b."BOOKING_ID" IS NULL  -- No conflicting booking
+    b."BOOKING_ID" IS NULL
 GROUP BY 
-    h."Address";
+    TRIM(split_part(h."Address", ',', 2));
 
 
 View 2 Aggregated Capacity of All Rooms Per Hotel:
