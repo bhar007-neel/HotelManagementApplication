@@ -117,7 +117,7 @@ ON "Room" ("Price");
 
 
 View 1 Rooms Available Per Area:
-CREATE OR REPLACE VIEW AvailableRoomsPerArea AS
+CREATE OR REPLACE VIEW "AvailableRoomsPerArea" AS
 SELECT 
     h."Address" AS "HotelAddress",
     COUNT(r."RoomID") AS "AvailableRoomCount"
@@ -137,7 +137,7 @@ GROUP BY
 
 
 View 2 Aggregated Capacity of All Rooms Per Hotel:
-CREATE OR REPLACE VIEW RoomCapacityPerHotel AS
+CREATE OR REPLACE VIEW "RoomCapacityPerHotel" AS
 SELECT 
     h."HotelID",
     h."Address" AS "HotelAddress",
