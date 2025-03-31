@@ -17,8 +17,8 @@ public class ViewServlet extends HttpServlet {
         List<AvailableRooms> availableRooms = dao.getAvailableRooms();
         List<RoomCapacity> roomCapacities = dao.getRoomCapacities();
 
-        System.out.println("Available Rooms:" + availableRooms.size());
-        System.out.println("Room Capacities:" + roomCapacities.size());
+        //System.out.println("Available Rooms:" + availableRooms.size());
+        //System.out.println("Room Capacities:" + roomCapacities.size());
 
         request.setAttribute("availableRooms", availableRooms);
         request.setAttribute("roomCapacities", roomCapacities);
