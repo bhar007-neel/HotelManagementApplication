@@ -81,23 +81,26 @@
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay muted loop>
-            <source src="videos/video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+<div class="video-container">
+    <video autoplay muted loop>
+        <source src="videos/video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
 
-    <div class="center-content">
-        <h1>Welcome to e-Hotels</h1>
-        <div class="options">
-            <a href="dateselection.jsp">Booking</a>
-            <a href="admin-login.jsp">Admin</a>
-        </div>
+<div class="center-content">
+    <h1>Welcome to e-Hotels</h1>
+    <div class="options">
+        <a href="dateselection.jsp">Booking</a>
+        <a href="renting.jsp">Renting</a>
+        <a href="employee.jsp">Employees</a>
+        <a href="admin-login.jsp">Admin</a>
+        <a href="views">View Hotels</a> <!-- ✅ New button added -->
     </div>
+</div>
 
-    <footer>
-        <p>&copy; 2025 e-Hotels. All rights reserved.</p>
-    </footer>
+<footer>
+    <p>&copy; 2025 e-Hotels. All rights reserved.</p>
+</footer>
 </body>
 </html>
