@@ -1,45 +1,102 @@
-🏨 Hotel Management Application
-The Hotel Management Application is a full-stack Java-based web application designed to manage hotel operations efficiently. Built using JSP, Servlets, and PostgreSQL, it supports core administrative functionalities like adding, updating, and deleting hotels, rooms, and employee records.
+# 🏨 Hotel Management Web Application
 
-🔧 Technologies Used:
-Java (Servlets & JSP)
+A **Java-based full-stack hotel management system** that simplifies operations like managing hotels, rooms, and employees — all through a secure admin portal.
 
-PostgreSQL
+> ✅ Built with **Java Servlets**, **JSP**, **PostgreSQL**, and **JDBC**  
+> 📂 Follows **MVC architecture** and uses **DAO design pattern**  
+> 🎥 [Watch Demo Video on YouTube](https://youtu.be/rybHyttDmk4)
 
-HTML/CSS
+---
 
-JDBC
+## 🎥 Live Demo
 
-Apache Tomcat
+[![Hotel Management System Demo](https://img.youtube.com/vi/rybHyttDmk4/0.jpg)](https://youtu.be/rybHyttDmk4)
 
-🎯 Key Features:
-Admin Login System: Secure admin login to access all management features.
+> 📺 Click the image to watch a full walkthrough of the app in action.
 
-CRUD Operations: Perform Create, Read, Update, and Delete actions on:
+---
 
-Hotels
+## 🚀 Features
 
-Rooms
+🔐 **Admin Authentication**  
+Only verified admins can access management panels.
 
-Employees (search by SSN)
+🏨 **Hotel Management**  
+Add, update, and delete hotel records, including manager assignments.
 
-Referential Integrity: Proper foreign key constraints maintained between hotels and rooms.
+🛏️ **Room Management**  
+Manage rooms with respect to their hotels. Ensures referential integrity using foreign keys.
 
-DAO Pattern: Clean separation of data access logic using DAO classes (HotelDAO, RoomDAO, etc.).
+👷 **Employee Management (by SSN)**  
+Search for employees by SSN and perform all CRUD operations.
 
-Modular Architecture: Follows MVC-like separation for maintainability.
+🧠 **Data Access Object (DAO) Layer**  
+Clean, reusable backend logic to handle database interaction.
 
-User-Friendly Interface: Simple web UI using JSP and servlets to navigate and manage records.
+🗃️ **PostgreSQL Integration**  
+Database-driven architecture with proper normalization and relationships.
 
-Authentication-based Access: Only authenticated admins can manage hotel and employee records.
+---
 
-💡 What I Learned:
-Connecting Java web apps to a PostgreSQL database using JDBC.
+## 🧰 Technologies Used
 
-Implementing real-world features like search and filter within CRUD forms.
+| Layer           | Tools/Technologies                        |
+|----------------|--------------------------------------------|
+| Frontend        | JSP, HTML, CSS                            |
+| Backend         | Java, Servlets                            |
+| Database        | PostgreSQL                                |
+| Server          | Apache Tomcat                             |
+| Design Pattern  | DAO (Data Access Object)                  |
+| Architecture    | MVC-inspired structure                    |
 
-Structuring backend logic with the DAO pattern.
+---
 
-Building dynamic web pages with JSP and routing with Servlets.
+## 📁 Project Structure
 
-Debugging Tomcat deployment and handling exceptions gracefully.
+
+e-Hotels/
+├── src/
+│ ├── dao/
+│ ├── model/
+│ ├── servlet/
+├── web/
+│ ├── jsp/
+│ ├── css/
+│ └── login.jsp
+├── sql/
+│ └── schema.sql
+├── package.json
+└── README.md
+
+
+---
+
+## 🧠 What I Learned
+
+✅ Real-world web architecture using Java  
+✅ How to use JDBC to interact with PostgreSQL  
+✅ Structuring web apps using MVC and DAO patterns  
+✅ Ensuring data consistency through foreign key constraints  
+✅ Building full CRUD features with form validation
+
+---
+
+
+## 🔧 Setup Instructions
+
+1. Clone the project:
+   ```bash
+   git clone https://github.com/your-username/hotel-management-app.git
+   cd hotel-management-app
+Import the project into your IDE (e.g., IntelliJ, Eclipse).
+
+Set up PostgreSQL:
+
+Create DB and tables using schema.sql.
+
+Configure database credentials in your DAO files.
+
+Deploy to Apache Tomcat.
+
+
+
